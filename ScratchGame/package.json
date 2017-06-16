@@ -1,0 +1,9 @@
+{
+  "name": "scratch-game",
+  "version": "0.0.0",
+  "description": "ScratchGame",
+  "main": "app.js",
+  "author": {
+    "name": "Fered"
+  }
+}
