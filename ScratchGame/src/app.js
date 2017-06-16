@@ -186,7 +186,7 @@
                             setBottomSlots(slotIndex);
                     }; 
                     interactiveRegion.interactive = true; // make sure its interactive able    
-                    interactiveRegion.on('pointerover', interactiveRegionPointerHandler);
+                    interactiveRegion.on('mouseover', interactiveRegionPointerHandler);
                     interactiveRegion.on('touchmove', interactiveRegionPointerHandler);
 
 
