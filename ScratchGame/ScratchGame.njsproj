@@ -29,7 +29,6 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="build\app.js" />
     <Compile Include="dist\js\app.min.js" />
     <Compile Include="dist\js\pixi.min.js" />
     <Compile Include="Gulpfile.js" />
@@ -61,7 +60,6 @@
     <Content Include="src\scss\stylesheet.scss" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="build\" />
     <Folder Include="dist\" />
     <Folder Include="dist\css\" />
     <Folder Include="dist\images\" />
