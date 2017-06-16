@@ -1,0 +1,103 @@
+@import 'imports/_mixins';
+body {
+    margin: 0;
+    padding: 0;
+    text-align: center; 
+    overflow-y:hidden;
+}
+
+.bg {
+    background: url(../images/pagebg.png) #381803 center center;
+    background-size: cover;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+.overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(20, 8, 0, 0.9);
+    @include opacity(0);
+    @include transition(opacity .3s ease-in-out);
+}
+.slots {
+    top: 50%;
+    position: absolute;
+    left: 50%;
+    margin-top: 180px;
+    margin-left: -280px;
+    @include transition(margin-top .3s ease-in-out);
+
+    div {
+        border: 1px solid #b75f27;
+        border-radius: 5px;
+        box-shadow: 5px 5px 10px #170601;
+        width: 140px;
+        height: 140px;
+        float: left;
+        margin-left: 35px;
+        background: no-repeat center center rgba(74, 30, 6, 0.81);
+        background-size: 70%;
+    }
+
+    div:last-child {
+        margin-right: 35px
+    }
+
+    button {
+        display: none;
+        margin: 200px auto 0;
+        clear: both;
+        padding: 10px;
+        border-radius: 5px;
+        background-color: #92380a;
+        color: #f0e96e;
+        border: 1px solid #b36c3e;
+        width: 200px;
+        font-size: 24px;
+        font-weight: bold;
+        cursor:pointer;
+    }
+
+    .message {
+        color: #ffd908;
+        font-size: 40px;
+        display:none;
+        strong { 
+            font-size: 1.5em;
+        }
+    }
+}
+canvas {
+    border: 1px solid #b75f27;
+    border-radius: 5px;
+    box-shadow: 5px 5px 10px #170601;
+    cursor: none !important;
+    top: 50%;
+    position: absolute;
+    left: 50%;
+}
+
+body.show-overlay {
+    .overlay {
+        @include opacity(1);
+        z-index: 2;
+    }
+
+    .slots {
+        z-index: 3;
+        margin-top: -220px;
+
+        button {
+            display: block;
+        }
+    }
+}
+
+body.show-overlay.winner .slots .message.winner{ display:block} 
+body.show-overlay.loser .slots .message.loser { display: block} 

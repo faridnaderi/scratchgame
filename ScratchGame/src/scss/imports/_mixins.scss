@@ -1,0 +1,19 @@
+@mixin transition($value) {
+	-webkit-transition: $value;
+	-moz-transition: $value;
+	-o-transition: $value;
+	transition: $value ;
+}
+
+@mixin opacity($value) {
+	/* IE 8 */
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity="+($value*100)+")";
+	/* IE 5-7 */
+	filter: alpha(opacity=$value*100);
+	/* Netscape */
+	-moz-opacity: $value;
+	/* Safari 1.x */
+	-khtml-opacity: $value;
+	/* Good browsers */
+	opacity: $value;
+}
