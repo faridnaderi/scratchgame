@@ -111,20 +111,32 @@
             stage.interactive = true;
             stage.on('pointerdown', (event => { dragging = true; }));
             stage.on('pointerup', (() => dragging = false));
-            //stage.on('pointermove', (event => {
-            //    let pos = event.data.global;
-            //    // move cursor align with pointer
-            //    cursor.position.copy(pos);
-            //    if (dragging) {
-            //        // to make sure mouse pointer is in center of scrath point
-            //        pos.x -= 50;
-            //        pos.y -= 50; 
-            //        // get a random brush and render to texture for revealing the coins.
-            //        let randomBrush = brushes[Math.floor(Math.random() * (brushes.length - 1))];
-            //        randomBrush.position.copy(pos);
-            //        app.renderer.render(randomBrush, renderTexture, false, null, false);
-            //    }
-            //}));
+            stage.on('pointermove', pointerMove);
+        }
+        function pointerMove(event) {  
+            let pos = event.data.global;
+            // move cursor align with pointer
+            cursor.position.copy(pos);
+            if (dragging) {
+                // to make sure mouse pointer is in center of scrath point
+                pos.x -= 50;
+                pos.y -= 50;
+                // get a random brush and render to texture for revealing the coins.
+                let randomBrush = brushes[Math.floor(Math.random() * (brushes.length - 1))];
+                randomBrush.position.copy(pos);
+                app.renderer.render(randomBrush, renderTexture, false, null, false);
+
+                revealSlots(pos);
+            } 
+        }
+        function revealSlots(pos) {
+            //3x3 table for checking revealed slot
+            for (let row = 0; row < 3; row++)
+                if (pos.y >= 30 + (row * 150) && pos.y <= 120 + (row * 150) )  
+                    for (let col = 0; col < 3;col++)
+                        if (pos.x >= 150 * col && pos.x <= 100 + (150*col) && dragging && !slotRevealed[(row*3) + col])
+                            setBottomSlots(row,col);   
+            
         }
         function createSlots() {
             /*  ================= Variables ============= */
@@ -144,7 +156,8 @@
             function create(row, col) {  // creates slots and interactive region and append to stage.
 
                 stage.addChild(createSlot());
-                stage.addChild(createInteractiveRegion());
+                //stage.addChild(createInteractiveRegion());
+                
 
                 function getRandomCoin() {
                     return coins[Math.floor(Math.random() * (coins.length - 1))];
@@ -165,53 +178,81 @@
                     slots.push(slot);
                     return slot;
                 }
+                /*
                 function createInteractiveRegion() {
 
-                    const interactiveRegion = new PIXI.Graphics();
+                    const interactiveRegion = new PIXI.Graphics(); 
+                    const w = slotWidth / 1.5;
+                    const h = slotWidth / 1.5;
                     // make sure its transparent
-                    interactiveRegion.beginFill(0x000000, 0);
-                    interactiveRegion.drawRect(0, 0, 200, 200);
+                    interactiveRegion.beginFill(0x000000, .1);
+                    interactiveRegion.drawRect(0, 0, w, h);
                     interactiveRegion.endFill();
 
                     interactiveRegion.position.set(
                         (slotPadding * 1.25) + (col * (slotWidth + slotPadding)),
                         (slotPadding * 2) + (row * (slotWidth + slotPadding))
                     );
-                    interactiveRegion.width = slotWidth / 1.5;
-                    interactiveRegion.height = slotWidth / 1.5;
+                    interactiveRegion.width = w;
+                    interactiveRegion.height = h;
 
-                    function interactiveRegionPointerHandler() { // on pointer over calls three bottom slots handler.
+
+                    function interactiveRegionPointerHandler(event) { // on pointer over calls three bottom slots handler.
                         const slotIndex = (row * 3) + col;
-                        if (dragging && !slotRevealed[slotIndex]) // if this slot is not already revealed 
-                            setBottomSlots(slotIndex);
-                    }; 
-                    interactiveRegion.interactive = true; // make sure its interactive able    
-                    interactiveRegion.on('mouseover', interactiveRegionPointerHandler);
-                    interactiveRegion.on('touchmove', interactiveRegionPointerHandler);
-
-
-                    interactiveRegions.push(interactiveRegion); // Push to interactiveRegion  
-
+                        console.log(slotIndex + ':'+this.slotIndex);
+                        if (this.slotIndex && this.slotIndex == slotIndex) {
+                            //pointerMove(event);
+                            let pos = event.data.global;
+                            if (dragging && !slotRevealed[slotIndex]  ) // if this slot is not already revealed 
+                                setBottomSlots(slotIndex); 
+                        }
+                    };
+                    interactiveRegion.slotIndex = (row * 3) + col;
+                    interactiveRegion.interactive = true; // make sure its interactive able  
+                    interactiveRegion.on('pointermove', interactiveRegionPointerHandler); 
+                    interactiveRegions.push(interactiveRegion); // Push to interactiveRegion 
+                    
                     return interactiveRegion;
-                }
+                }*/
             }
 
-        }
-         
-        function addToRevealedSlots(slotIndex, coin) {
+        } 
+        function addToRevealedSlots(row, col, slotIndex, coin) {
             slotRevealed[slotIndex] = parseInt(coin);
+
+
+            // auto reveal the slot to make sure it completly reveales
+            let randomBrush = new PIXI.Sprite(resources["scratch_brush_2"].texture) ; 
+               
+            randomBrush.x = 75 + (col*150);
+            randomBrush.y = 75 + (row * 150);  
+            // Listen for animate update
+            let delta = 0;
+            app.ticker.add(animationTicker, randomBrush);
+            function animationTicker() {
+
+                delta += 10;
+                randomBrush.width = delta;
+                randomBrush.height = delta;
+                randomBrush.x -= delta/25;
+                randomBrush.y -= delta / 25; 
+                app.renderer.render(randomBrush , renderTexture, false, null, false);
+                if (delta >= 150) {
+                    app.ticker.remove(animationTicker, randomBrush);
+                }
+            }
         }
-        function setBottomSlots(slotIndex) {
+        function setBottomSlots(row,col) { 
             /*  ================= Variables ============= */
-            const slot = slots[slotIndex],
+            const slotIndex = (row * 3) + col,
+                slot = slots[slotIndex],
                 getCoinByTextureName = slot.texture.baseTexture.imageUrl.replace('images/coins/', '').replace('.png', ''),
                 sameRevealedCoinsCount = [];
             let slotsPriorityResult = [];
 
 
-
             /*  ================= Actions ============= */
-            addToRevealedSlots(slotIndex, getCoinByTextureName);
+            addToRevealedSlots(row, col, slotIndex, getCoinByTextureName);
 
             countRevealedCoins();
             setResultPriority_by_sortRevealedCoins();
