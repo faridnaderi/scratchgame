@@ -179,15 +179,19 @@
                     );
                     interactiveRegion.width = slotWidth / 1.5;
                     interactiveRegion.height = slotWidth / 1.5;
-                     
 
-                    interactiveRegion.interactive = true; // make sure its interactive able   
-                    interactiveRegions.push(interactiveRegion); // Push to interactiveRegion 
-                    interactiveRegion.on('pointerover', function() { // on pointer over calls three bottom slots handler.
+                    function interactiveRegionPointerHandler() { // on pointer over calls three bottom slots handler.
                         const slotIndex = (row * 3) + col;
                         if (dragging && !slotRevealed[slotIndex]) // if this slot is not already revealed 
                             setBottomSlots(slotIndex);
-                    });
+                    }; 
+                    interactiveRegion.interactive = true; // make sure its interactive able    
+                    interactiveRegion.on('pointerover', interactiveRegionPointerHandler);
+                    interactiveRegion.on('touchmove', interactiveRegionPointerHandler);
+
+
+                    interactiveRegions.push(interactiveRegion); // Push to interactiveRegion  
+
                     return interactiveRegion;
                 }
             }
