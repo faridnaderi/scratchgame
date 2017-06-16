@@ -111,20 +111,20 @@
             stage.interactive = true;
             stage.on('pointerdown', (event => { dragging = true; }));
             stage.on('pointerup', (() => dragging = false));
-            stage.on('pointermove', (event => {
-                let pos = event.data.global;
-                // move cursor align with pointer
-                cursor.position.copy(pos);
-                if (dragging) {
-                    // to make sure mouse pointer is in center of scrath point
-                    pos.x -= 50;
-                    pos.y -= 50; 
-                    // get a random brush and render to texture for revealing the coins.
-                    let randomBrush = brushes[Math.floor(Math.random() * (brushes.length - 1))];
-                    randomBrush.position.copy(pos);
-                    app.renderer.render(randomBrush, renderTexture, false, null, false);
-                }
-            }));
+            //stage.on('pointermove', (event => {
+            //    let pos = event.data.global;
+            //    // move cursor align with pointer
+            //    cursor.position.copy(pos);
+            //    if (dragging) {
+            //        // to make sure mouse pointer is in center of scrath point
+            //        pos.x -= 50;
+            //        pos.y -= 50; 
+            //        // get a random brush and render to texture for revealing the coins.
+            //        let randomBrush = brushes[Math.floor(Math.random() * (brushes.length - 1))];
+            //        randomBrush.position.copy(pos);
+            //        app.renderer.render(randomBrush, renderTexture, false, null, false);
+            //    }
+            //}));
         }
         function createSlots() {
             /*  ================= Variables ============= */
