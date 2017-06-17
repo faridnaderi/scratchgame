@@ -1,9 +1,10 @@
 @import 'imports/_mixins';
-body {
+body, html, p, button, div, input {
     margin: 0;
     padding: 0;
-    text-align: center; 
-    overflow-y:hidden;
+    text-align: center;
+    overflow-y: hidden;
+    font-family: 'Chicle', cursive;
 }
 
 .bg {

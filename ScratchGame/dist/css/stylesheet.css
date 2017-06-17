@@ -1,8 +1,9 @@
-body {
+body, html, p, button, div, input {
   margin: 0;
   padding: 0;
   text-align: center;
-  overflow-y: hidden; }
+  overflow-y: hidden;
+  font-family: 'Chicle', cursive; }
 
 .bg {
   background: url(../images/pagebg.png) #381803 center center;

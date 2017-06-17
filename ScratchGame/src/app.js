@@ -324,7 +324,9 @@
                     let winner = slotsPriorityResult[0] === slotsPriorityResult[1] && slotsPriorityResult[1] === slotsPriorityResult[2];
                     if (winner) {
                         body.className += ' winner';
-                        winnerCoins.innerHTML = slotsPriorityResult[0];
+                        winnerCoins.innerHTML = slotsPriorityResult[0].toFixed(0).replace(/./g, function (c, i, a) {
+                            return i && c !== "." && ((a.length - i) % 3 === 0) ? ',' + c : c;
+                        });
                     } else {
                         body.className += ' loser'; 
                     }
