@@ -147,7 +147,7 @@
             /*  ================= Actions ============= */
             // 3 x 3 grid scratch game.
             for (let row = 0; row < 3; row++) {
-                for (let col = 0; col < 3; col++) {
+                for (let col = 0; col < 3; col++) { 
                     create(row, col);
                 }
             }
@@ -155,9 +155,7 @@
             /*  ================= Methods ============= */
             function create(row, col) {  // creates slots and interactive region and append to stage.
 
-                stage.addChild(createSlot());
-                //stage.addChild(createInteractiveRegion());
-                
+                stage.addChild(createSlot()); 
 
                 function getRandomCoin() {
                     return coins[Math.floor(Math.random() * (coins.length - 1))];
@@ -178,42 +176,7 @@
                     slots.push(slot);
                     return slot;
                 }
-                /*
-                function createInteractiveRegion() {
-
-                    const interactiveRegion = new PIXI.Graphics(); 
-                    const w = slotWidth / 1.5;
-                    const h = slotWidth / 1.5;
-                    // make sure its transparent
-                    interactiveRegion.beginFill(0x000000, .1);
-                    interactiveRegion.drawRect(0, 0, w, h);
-                    interactiveRegion.endFill();
-
-                    interactiveRegion.position.set(
-                        (slotPadding * 1.25) + (col * (slotWidth + slotPadding)),
-                        (slotPadding * 2) + (row * (slotWidth + slotPadding))
-                    );
-                    interactiveRegion.width = w;
-                    interactiveRegion.height = h;
-
-
-                    function interactiveRegionPointerHandler(event) { // on pointer over calls three bottom slots handler.
-                        const slotIndex = (row * 3) + col;
-                        console.log(slotIndex + ':'+this.slotIndex);
-                        if (this.slotIndex && this.slotIndex == slotIndex) {
-                            //pointerMove(event);
-                            let pos = event.data.global;
-                            if (dragging && !slotRevealed[slotIndex]  ) // if this slot is not already revealed 
-                                setBottomSlots(slotIndex); 
-                        }
-                    };
-                    interactiveRegion.slotIndex = (row * 3) + col;
-                    interactiveRegion.interactive = true; // make sure its interactive able  
-                    interactiveRegion.on('pointermove', interactiveRegionPointerHandler); 
-                    interactiveRegions.push(interactiveRegion); // Push to interactiveRegion 
-                    
-                    return interactiveRegion;
-                }*/
+                 
             }
 
         } 
